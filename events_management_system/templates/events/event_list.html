@@ -22,8 +22,18 @@
                 <td class="column4">{{ event.end_date | date }}</td>
                 <td class="column5">{{ event.location }}</td>
                 <td class="column6">
+                    {% if event.can_subscribe %}
+                    <script>console.log("{{ event.users }}")</script>
+                    {% if event in user.events %}
                     <button id="button-{{ event.id }}" class="styled"
                         onclick="subscribe_to_event({{ event.id}})">Subscribe</button>
+                    {% else %}
+                    <button id="button-{{ event.id }}" class="styled"
+                        onclick="unsubscribe_from_event({{ event.id}})">Unsubscribe</button>
+                    {% endif %}
+                    {% else %}
+                    Event finished
+                    {% endif %}
                 </td>
             </tr>
             {% empty %}
@@ -32,22 +42,66 @@
         </tbody>
     </table>
 </div>
+<div id="snackbar"></div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script>
     function subscribe_to_event(event_id) {
         console.log("subscribe_to_event", event_id);
-        $(document).ready(function() {
-            $.ajax({
-                url: "/events/" + event_id + "/subscription/",
-                type: "POST",
-                success: function(data) {
-                    console.log("success", data);
-                    $("#button-" + event_id).text("Unsubscribe");
-                    $("#button-" + event_id).attr("onclick", "unsubscribe_from_event(" + event_id + ")");
-                }
-            });
+        const event_subscription_url = "{% url 'event-subscription' event_id=12345 %}".replace(/12345/, event_id);
+        $("#button-" + event_id).attr("disabled", true);
+        fetch(event_subscription_url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(function (response) {
+            if (response.status == 200) {
+                console.log("subscribed");
+                $("#button-" + event_id).text("Unsubscribe");
+                $("#button-" + event_id).attr("onclick", "unsubscribe_from_event(" + event_id + ")");
+                $("#button-" + event_id).attr("disabled", false);
+                showSnackbar("Subscribed to event");
+            } else {
+                console.log("error");
+                $("#button-" + event_id).attr("disabled", false);
+            }
         });
     }
+    function unsubscribe_from_event(event_id) {
+        console.log("unsubscribe_from_event", event_id);
+        const event_subscription_url = "{% url 'event-subscription' event_id=12345 %}".replace(/12345/, event_id);
+        $("#button-" + event_id).attr("disabled", true);
+        fetch(event_subscription_url, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        }).then(function (response) {
+            if (response.status == 200) {
+                console.log("unsubscribed");
+                $("#button-" + event_id).text("Subscribe");
+                $("#button-" + event_id).attr("onclick", "subscribe_to_event(" + event_id + ")");
+                $("#button-" + event_id).attr("disabled", false);
+                showSnackbar("Unsubscribed from event");
+            } else {
+                console.log("error");
+                $("#button-" + event_id).attr("disabled", false);
+            }
+        });
+    }
+
+    function showSnackbar(text) {
+        // Get the snackbar DIV
+        var x = document.getElementById("snackbar");
+        $("#snackbar").text(text);
+
+        // Add the "show" class to DIV
+        $("#snackbar").addClass("show");
+
+        // After 3 seconds, remove the show class from DIV
+        setTimeout(function () { $("#snackbar").removeClass("show") }, 3000);
+    }
+
 </script>
 
 {% endblock content %}

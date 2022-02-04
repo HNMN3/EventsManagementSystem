@@ -1,9 +1,5 @@
-from typing import Tuple
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
@@ -13,6 +9,10 @@ from events_management_system.events.models import Event
 
 # Create your views here.
 class EventListView(LoginRequiredMixin, ListView):
+    """
+    View for listing all events.
+    """
+
     model = Event
     template_name = 'events/event_list.html'
     context_object_name = 'events'
@@ -21,6 +21,7 @@ class EventListView(LoginRequiredMixin, ListView):
 
 
 class EventSubscriptionView(APIView):
+
     def post(self, request, event_id: int) -> Response:
         """Subscribe to an event.
 
