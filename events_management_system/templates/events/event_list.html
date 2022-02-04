@@ -1,6 +1,13 @@
 {% extends "base.html" %} {% load static %} {% block title %}Events{% endblock %} {% block content %}
 <h1 class="table-heading-h1">Events</h1>
-
+<div class="topnav">
+    <div class="nav-container">
+        <a {% if list_type == "all" %} class="active" {% endif %} href="{% url 'event-list' %}?type=all">All Events</a>
+        <a {% if list_type == "past" %} class="active" {% endif %} href="{% url 'event-list' %}?type=past">Past Events</a>
+        <a {% if list_type == "running" %} class="active" {% endif %} href="{% url 'event-list' %}?type=running">Running Events</a>
+        <a {% if list_type == "upcoming" %} class="active" {% endif %} href="{% url 'event-list' %}?type=upcoming">Upcoming Events</a>
+    </div>
+</div>
 <div class="table100">
     <table>
         <thead>
@@ -14,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for event in events %}
+            {% for event in event_list %}
             <tr>
                 <td class="column1">{{ event.name }}</td>
                 <td class="column2">{{ event.description }}</td>
@@ -24,20 +31,22 @@
                 <td class="column6">
                     {% if event.can_subscribe %}
                     <script>console.log("{{ event.users }}")</script>
-                    {% if event in user.events %}
-                    <button id="button-{{ event.id }}" class="styled"
-                        onclick="subscribe_to_event({{ event.id}})">Subscribe</button>
-                    {% else %}
+                    {% if user.id in event.subscribed_users %}
                     <button id="button-{{ event.id }}" class="styled"
                         onclick="unsubscribe_from_event({{ event.id}})">Unsubscribe</button>
+                    {% else %}
+                    <button id="button-{{ event.id }}" class="styled"
+                        onclick="subscribe_to_event({{ event.id}})">Subscribe</button>
                     {% endif %}
                     {% else %}
-                    Event finished
+                    Event Completed
                     {% endif %}
                 </td>
             </tr>
             {% empty %}
-            <p>No events at the moment.</p>
+            <tr>
+                <td class="no-events" colspan="6">No events at the moment.</td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>

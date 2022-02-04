@@ -1,4 +1,7 @@
+from typing import Any, Dict
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import QuerySet
 from django.views.generic.list import ListView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
@@ -15,9 +18,25 @@ class EventListView(LoginRequiredMixin, ListView):
 
     model = Event
     template_name = 'events/event_list.html'
-    context_object_name = 'events'
     paginate_by = 30
-    ordering = ['-start_date']
+    ordering = ['start_date', 'end_date']
+
+    def get_queryset(self) -> QuerySet:
+        list_type = self.request.GET.get('type', 'all')
+        if list_type == 'upcoming':
+            return Event.objects.upcoming()
+        elif list_type == 'past':
+            return Event.objects.past()
+        elif list_type == 'running':
+            return Event.objects.running()
+        else:
+            return Event.objects.all()
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context_data = super().get_context_data(**kwargs)
+        print(context_data)
+        context_data['list_type'] = self.request.GET.get('type', 'all')
+        return context_data
 
 
 class EventSubscriptionView(APIView):
