@@ -50,6 +50,19 @@
             {% endfor %}
         </tbody>
     </table>
+<div class="pagination">
+    {% if not page_obj.has_previous %}
+    <a class="disabled" href="#">❮</a>
+    {% else %}
+    <a href="{% url 'event-list' %}?type={{ list_type }}&page={{ page_obj.previous_page_number }}"">❮</a>
+        {% endif %}
+
+        {% if not page_obj.has_next %}
+            <a class=" disabled" href="#">❯</a>
+    {% else %}
+    <a href="{% url 'event-list' %}?type={{ list_type }}&page={{ page_obj.next_page_number }}"">❯</a>
+        {% endif %}
+    </div>
 </div>
 <div id="snackbar"></div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>

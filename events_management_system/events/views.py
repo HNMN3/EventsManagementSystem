@@ -18,7 +18,7 @@ class EventListView(LoginRequiredMixin, ListView):
 
     model = Event
     template_name = 'events/event_list.html'
-    paginate_by = 30
+    paginate_by = 10
     ordering = ['start_date', 'end_date']
 
     def get_queryset(self) -> QuerySet:
