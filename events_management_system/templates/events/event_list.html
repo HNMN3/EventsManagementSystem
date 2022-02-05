@@ -23,12 +23,23 @@
         <tbody>
             {% for event in event_list %}
             <tr>
-                <td class="column1">{{ event.name }}</td>
-                <td class="column2">{{ event.description }}</td>
-                <td class="column3">{{ event.start_date | date }}</td>
-                <td class="column4">{{ event.end_date | date }}</td>
-                <td class="column5">{{ event.location }}</td>
+                <td class="column1">
+                    <div class='table-cell-container'>{{ event.name }}</div>
+                </td>
+                <td class="column2">
+                    <div class='table-cell-container'>{{ event.description }}</div>
+                </td>
+                <td class="column3">
+                    <div class='table-cell-container'>{{ event.start_date | date }}</div>
+                </td>
+                <td class="column4">
+                    <div class='table-cell-container'>{{ event.end_date | date }}</div>
+                </td>
+                <td class="column5">
+                    <div class='table-cell-container'>{{ event.location }}</div>
+                </td>
                 <td class="column6">
+                    <div class='table-cell-container'>
                     {% if event.can_subscribe %}
                     <script>console.log("{{ event.users }}")</script>
                     {% if user.id in event.subscribed_users %}
@@ -41,6 +52,7 @@
                     {% else %}
                     Event Completed
                     {% endif %}
+                    </div>
                 </td>
             </tr>
             {% empty %}

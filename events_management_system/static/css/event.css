@@ -22,12 +22,9 @@ table tbody tr:last-child {
     border: 0;
 }
 
-th,
-td {
-    padding: 12px 0;
-}
 
 th {
+    padding: 12px 0;
     font-family: OpenSans-Regular;
     font-size: 20px;
     color: #fff;
@@ -50,22 +47,22 @@ tbody tr {
 }
 
 .column2 {
-    width: 245px;
+    width: 280px;
     text-align: center;
 }
 
 .column3 {
-    width: 160px;
+    width: 140px;
     text-align: center;
 }
 
 .column4 {
-    width: 160px;
+    width: 140px;
     text-align: center;
 }
 
 .column5 {
-    width: 160px;
+    width: 140px;
     text-align: center;
     padding-right: 60px;
 }
@@ -74,6 +71,12 @@ tbody tr {
     width: 160px;
     text-align: center;
     padding-right: 60px;
+}
+
+.table-cell-container {
+    height: 45px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 td.no-events {
@@ -97,7 +100,6 @@ button.styled {
     font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif;
     font-size: 16px;
     font-weight: 700;
-    line-height: 24px;
     opacity: 1;
     outline: 0 solid transparent;
     padding: 8px 18px;
