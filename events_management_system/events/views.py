@@ -19,20 +19,30 @@ class EventListView(LoginRequiredMixin, ListView):
     model = Event
     template_name = 'events/event_list.html'
     paginate_by = 10
-    ordering = ['start_date', 'end_date']
 
     def get_queryset(self) -> QuerySet:
+        """Generates queryset based on the tab selected (using query arguments)
+
+        Returns:
+            QuerySet: Generated queryset
+        """
         list_type = self.request.GET.get('type', 'all')
         if list_type == 'upcoming':
-            return Event.objects.upcoming()
+            query = Event.objects.upcoming()
         elif list_type == 'past':
-            return Event.objects.past()
+            query = Event.objects.past()
         elif list_type == 'running':
-            return Event.objects.running()
+            query = Event.objects.running()
         else:
-            return Event.objects.all()
+            query = Event.objects.all()
+        return query.order_by('start_date', 'end_date')
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        """Add required context data for django template
+
+        Returns:
+            Dict[str, Any]: context data
+        """
         context_data = super().get_context_data(**kwargs)
         print(context_data)
         context_data['list_type'] = self.request.GET.get('type', 'all')

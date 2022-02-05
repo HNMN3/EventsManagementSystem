@@ -9,13 +9,13 @@ table {
 }
 
 table thead tr {
-    height: 50px;
+    height: 60px;
     background: #0d6efd;
     overflow: hidden;
 }
 
 table tbody tr {
-    height: 50px;
+    height: 60px;
 }
 
 table tbody tr:last-child {
@@ -74,7 +74,8 @@ tbody tr {
 }
 
 .table-cell-container {
-    height: 45px;
+    height: 60px !important;
+    padding: 15px 0;
     text-overflow: ellipsis;
     overflow: hidden;
 }

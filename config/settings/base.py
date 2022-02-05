@@ -10,7 +10,7 @@ ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 APPS_DIR = ROOT_DIR / "events_management_system"
 env = environ.Env()
 
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(ROOT_DIR / ".env"))
@@ -306,3 +306,10 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+# AIRTABLE configuration
+AIRTABLE_API_KEY = env("AIRTABLE_API_KEY")
+AIRTABLE_BASE_ID = env("AIRTABLE_BASE_ID")
+AIRTABLE_EVENT_TABLE_NAME = "Events"
+AIRTABLE_API_URL = ("https://api.airtable.com/v0/{}/{}"
+                     .format(AIRTABLE_BASE_ID, AIRTABLE_EVENT_TABLE_NAME))

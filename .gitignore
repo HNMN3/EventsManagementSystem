@@ -272,3 +272,6 @@ tags
 events_management_system/media/
 
 .pytest_cache/
+
+# Env files
+.env
